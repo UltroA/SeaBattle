@@ -14,15 +14,15 @@ void setupPC()
         {
             corX = rand() % N;
             corY = rand() % N;
-            if (!(fieldComp[corX][corY] == 1 ||
-                fieldComp[corX][corY + 1] == 1 ||
-                fieldComp[corX][corY - 1] == 1 ||
-                fieldComp[corX + 1][corY] == 1 ||
-                fieldComp[corX + 1][corY + 1] == 1 ||
-                fieldComp[corX + 1][corY - 1] == 1 ||
-                fieldComp[corX - 1][corY] == 1 ||
-                fieldComp[corX - 1][corY + 1] == 1 ||
-                fieldComp[corX - 1][corY - 1] == 1))
+            if ((fieldComp[corX][corY] == 0 ||
+                fieldComp[corX][corY + 1] == 0 ||
+                fieldComp[corX][corY - 1] == 0 ||
+                fieldComp[corX + 1][corY] == 0 ||
+                fieldComp[corX + 1][corY + 1] == 0 ||
+                fieldComp[corX + 1][corY - 1] == 0 ||
+                fieldComp[corX - 1][corY] == 0 ||
+                fieldComp[corX - 1][corY + 1] == 0 ||
+                fieldComp[corX - 1][corY - 1] == 0))
             {
                 fieldComp[corX][corY] = 1;
             }
@@ -74,23 +74,26 @@ void outFieldPlayer(){
     cout << "\t";
     for(int i = 1; i < N + 1; i++)
     {
-        cout << i << " ";
+        cout << ""<< i << " ";
     }
     cout << "\n";
     cout << "\n";
     cout << "\n";
-    
+
     for(int i = 0; i < N; i++){
         cout << i + 1 << "\t";
         for(int j = 0; j < N; j++){
             if(fieldPlayer[i][j] == 1){
-                cout << "V ";
+                cout << "⬛";
             }
-            else if(fieldPlayer[i][j] == 2){
-                cout << "0 ";
+            else if(fieldPlayer[i][j] == 3){
+                cout << "0";
+            }
+            else if (fieldPlayer[i][j] == 2){
+                cout << "🔲";
             }
             else{
-                cout << "~ ";
+                cout << "~~";
             }
         }
         cout << "\n";
@@ -104,7 +107,9 @@ int main()
     
     fields();
     setupPC();
-    setupPlayer();
+    for(int i = 0; i < 3; i++){
+        setupPlayer();
+    }
     outFieldPlayer();
 
     return 0;
