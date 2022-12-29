@@ -205,6 +205,7 @@ int main()
     int buff = 0;
     
     fields();
+    //magick
     for(int i = 0; i < 4; i++){ 
         setupOnePlayer();
         outFieldPlayer();
