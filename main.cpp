@@ -4,9 +4,20 @@ using namespace std;
 const int N = 11;
 int corX, corY, winValue;
 int fieldPlayer[N + 2][N + 2];
+int fieldShootFrPlayer[N][N];
 int fieldComp[N][N];
 
+// Checks
+bool inField(int x, int y){
+    if (x >= 0 && x < N && y >= 0 && y < N){
+        return true;
+    }
+    else{
+        return false;
+    }
+}
 
+// Setting up PC's ships
 void setupOnePC()
 {
     // Adding solo ship to field with random
@@ -70,6 +81,7 @@ void setupTwoPC()
     }
 }
 
+// Setting up player's ships
 void setupTwoPlayer()
 {
     // Adding two-bases ship to field
@@ -150,7 +162,9 @@ void setupOnePlayer()
     }
 }
 
-void fields(){
+// Initialization of fields
+void fields()
+{
     // Creating player's field 
     for(int i = 0; i < N; i++){
         for(int j = 0; j < N; j++){
@@ -166,7 +180,38 @@ void fields(){
     }
 }
 
-void outFieldPlayer(){
+// Shooting functions
+void shoot()
+{
+    int xt, yt;
+    int scorePlayer;
+    cout << "В какую клетку вести огонь, капитан? ";
+    cin >> yt;
+    cin >> xt;
+    xt--;
+    yt--;
+    if (fieldComp[xt][yt] == 1 && inField(xt, yt)){
+        fieldShootFrPlayer[xt][yt] == 2;
+        cout << "Попадание! Можно и еще один выстрел сделать.\n";
+        scorePlayer++;
+        shoot();
+
+    }
+    else if (fieldComp[xt][yt] == 0 && inField(xt, yt)) {
+        fieldShootFrPlayer[xt][yt] == 3;
+        cout << "Эх, мимо(";
+    }
+    else{
+        cout << "Ты сюда уже стрелял. Попробуй другую клетку)";
+        shoot();
+    }
+}
+
+// TODO: PC's shooting system
+
+// Render functions
+void renderSelf()
+{
     // Output of player's field
     cout << "\t";
     for(int i = 1; i < N; i++)
@@ -198,24 +243,60 @@ void outFieldPlayer(){
     }
 }
 
+void renderShooted()
+{
+    // Output of player's field
+    cout << "\t";
+    for(int i = 1; i < N; i++)
+    {
+        cout << i << " ";
+    }
+    cout << "\n";
+    cout << "\n";
+    cout << "\n";
 
+    for(int i = 0; i < N -1; i++){
+        cout << i + 1 << "\t";
+
+        for(int j = 0; j < N -1; j++){
+            if(fieldShootFrPlayer[i][j] == 1){
+                cout << "⬛";
+            }
+            else if(fieldShootFrPlayer[i][j] == 3){
+                cout << "0~";
+            }
+            else if (fieldShootFrPlayer[i][j] == 2){
+                cout << "🔲";
+            }
+            else{
+                cout << "~~";
+            }
+        }
+        cout << "\n";
+    }
+}
+
+// Game itself
 int main()
 {
     int temp = 0;
     int buff = 0;
+    int scorePlayer = 0;
+    int scorePC = 0;
     
     fields();
     //magick
     for(int i = 0; i < 4; i++){ 
         setupOnePlayer();
-        outFieldPlayer();
+        renderSelf();
         setupOnePC();  
     }
     for(int i = 0; i < 3; i++){
         setupTwoPlayer();
-        outFieldPlayer();
+        renderSelf();
         setupTwoPC();
     }
-    outFieldPlayer();
+    renderSelf();
+    renderShooted();
     return 0;
 }
