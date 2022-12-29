@@ -1,4 +1,6 @@
 #include <iostream>
+#include <stdlib.h>
+
 using namespace std;
 
 const int N = 11;
@@ -14,6 +16,105 @@ bool inField(int x, int y){
     }
     else{
         return false;
+    }
+}
+
+// Render functions
+void renderSelf()
+{
+    // Output of player's field
+    cout << "\t";
+    for(int i = 1; i < N; i++)
+    {
+        cout << i << " ";
+    }
+    cout << "\n";
+    cout << "\n";
+    cout << "\n";
+
+    for(int i = 0; i < N -1; i++){
+        cout << i + 1 << "\t";
+
+        for(int j = 0; j < N -1; j++){
+            if(fieldPlayer[i][j] == 1){
+                cout << "⬛";
+            }
+            else if(fieldPlayer[i][j] == 3){
+                cout << "0~";
+            }
+            else if (fieldPlayer[i][j] == 2){
+                cout << "🔲";
+            }
+            else{
+                cout << "~~";
+            }
+        }
+        cout << "\n";
+    }
+}
+
+void renderShooted()
+{
+    // Output of player's field
+    cout << "\t";
+    for(int i = 1; i < N; i++)
+    {
+        cout << i << " ";
+    }
+    cout << "\n";
+    cout << "\n";
+    cout << "\n";
+
+    for(int i = 0; i < N -1; i++){
+        cout << i + 1 << "\t";
+
+        for(int j = 0; j < N -1; j++){
+            if(fieldShootFrPlayer[i][j] == 1){
+                cout << "⬛";
+            }
+            else if(fieldShootFrPlayer[i][j] == 3){
+                cout << "0~";
+            }
+            else if (fieldShootFrPlayer[i][j] == 2){
+                cout << "🔲";
+            }
+            else{
+                cout << "~~";
+            }
+        }
+        cout << "\n";
+    }
+}
+
+void renderBot()
+{
+    cout << "\t";
+    for(int i = 1; i < N; i++)
+    {
+        cout << i << " ";
+    }
+    cout << "\n";
+    cout << "\n";
+    cout << "\n";
+
+    for(int i = 0; i < N -1; i++){
+        cout << i + 1 << "\t";
+
+        for(int j = 0; j < N -1; j++){
+            if(fieldComp[i][j] == 1){
+                cout << "⬛";
+            }
+            else if(fieldComp[i][j] == 3){
+                cout << "0~";
+            }
+            else if (fieldComp[i][j] == 2){
+                cout << "🔲";
+            }
+            else{
+                cout << "~~";
+            }
+        }
+        cout << "\n";
     }
 }
 
@@ -81,7 +182,6 @@ void setupTwoPC()
     }
 }
 
-// Setting up player's ships
 void setupTwoPlayer()
 {
     // Adding two-bases ship to field
@@ -191,15 +291,18 @@ void shoot()
     xt--;
     yt--;
     if (fieldComp[xt][yt] == 1 && inField(xt, yt)){
-        fieldShootFrPlayer[xt][yt] == 2;
+        fieldShootFrPlayer[xt][yt] = 2;
+        fieldComp[xt][yt] = 2;
         cout << "Попадание! Можно и еще один выстрел сделать.\n";
         scorePlayer++;
+        renderShooted();
         shoot();
-
     }
     else if (fieldComp[xt][yt] == 0 && inField(xt, yt)) {
-        fieldShootFrPlayer[xt][yt] == 3;
-        cout << "Эх, мимо(";
+        fieldShootFrPlayer[xt][yt] = 3;
+        fieldComp[xt][yt] = 3;
+        cout << "Эх, мимо(\n";
+        renderShooted();
     }
     else{
         cout << "Ты сюда уже стрелял. Попробуй другую клетку)";
@@ -209,72 +312,6 @@ void shoot()
 
 // TODO: PC's shooting system
 
-// Render functions
-void renderSelf()
-{
-    // Output of player's field
-    cout << "\t";
-    for(int i = 1; i < N; i++)
-    {
-        cout << i << " ";
-    }
-    cout << "\n";
-    cout << "\n";
-    cout << "\n";
-
-    for(int i = 0; i < N -1; i++){
-        cout << i + 1 << "\t";
-
-        for(int j = 0; j < N -1; j++){
-            if(fieldPlayer[i][j] == 1){
-                cout << "⬛";
-            }
-            else if(fieldPlayer[i][j] == 3){
-                cout << "0~";
-            }
-            else if (fieldPlayer[i][j] == 2){
-                cout << "🔲";
-            }
-            else{
-                cout << "~~";
-            }
-        }
-        cout << "\n";
-    }
-}
-
-void renderShooted()
-{
-    // Output of player's field
-    cout << "\t";
-    for(int i = 1; i < N; i++)
-    {
-        cout << i << " ";
-    }
-    cout << "\n";
-    cout << "\n";
-    cout << "\n";
-
-    for(int i = 0; i < N -1; i++){
-        cout << i + 1 << "\t";
-
-        for(int j = 0; j < N -1; j++){
-            if(fieldShootFrPlayer[i][j] == 1){
-                cout << "⬛";
-            }
-            else if(fieldShootFrPlayer[i][j] == 3){
-                cout << "0~";
-            }
-            else if (fieldShootFrPlayer[i][j] == 2){
-                cout << "🔲";
-            }
-            else{
-                cout << "~~";
-            }
-        }
-        cout << "\n";
-    }
-}
 
 // Game itself
 int main()
@@ -283,20 +320,26 @@ int main()
     int buff = 0;
     int scorePlayer = 0;
     int scorePC = 0;
-    
     fields();
-    //magick
+    // magick
     for(int i = 0; i < 4; i++){ 
         setupOnePlayer();
         renderSelf();
         setupOnePC();  
     }
-    for(int i = 0; i < 3; i++){
-        setupTwoPlayer();
-        renderSelf();
-        setupTwoPC();
+    // for(int i = 0; i < 3; i++){
+    //     setupTwoPlayer();
+    //     renderSelf();
+    //     setupTwoPC();
+    // }
+    // renderSelf();
+    // renderShooted();
+    renderBot();
+    while (scorePC < 20 || scorePlayer < 20){
+        shoot();
+        renderBot();
+        system("cls");
+        system("clear");
     }
-    renderSelf();
-    renderShooted();
     return 0;
 }
