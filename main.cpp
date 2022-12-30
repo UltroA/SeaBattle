@@ -138,104 +138,7 @@ void setupOnePC()
             }
 }
 
-
-// Not working
-
-// void setupTwoPC()
-// {
-//     // Adding two-bases ship to field to computer
-//     int x, y, x1, y1;
-
-//     x = 1 + rand() % N;
-//     y = 1 + rand() % N;
-
-//     if (!(fieldComp[x][y] == 1 ||
-//                 fieldComp[x][y + 1] == 1 ||
-//                 fieldComp[x][y - 1] == 1 ||
-//                 fieldComp[x + 1][y] == 1 ||
-//                 fieldComp[x + 1][y + 1] == 1 ||
-//                 fieldComp[x + 1][y - 1] == 1 ||
-//                 fieldComp[x - 1][y] == 1 ||
-//                 fieldComp[x - 1][y + 1] == 1 ||
-//                 fieldComp[x - 1][y - 1] == 1))
-//             {
-
-//                 x1 = rand() % N;
-//                 y1 = rand() % N;
-//                 if (!(fieldComp[x1][y1] == 1 
-//                     || (x1+1 == x && y1+1 == 1)
-//                     || (x1-1 == x && y1+1 == 1)
-//                     || (x1-1 == x && y1-1 == 1)
-//                     || (x1+1 == x && y1-1 == 1))
-//                     &&
-//                     ((x1 == x && y1+1 == y) ||
-//                     (x1+1 == x && y1 == y) || 
-//                     (x1-1 == x && y1 == y) || 
-//                     (x1 == x && y1-1 == y)))
-//                         {
-//                             fieldComp[x1 - 1][y1 - 1] = 1;
-//                             fieldComp[x - 1][y - 1] = 1;
-//                         }
-//                 else{
-//                     setupTwoPC();
-//                 }
-//             }
-//     else{
-//         setupTwoPC();
-//     }
-// }
-
-// void setupTwoPlayer()
-// {
-//     // Adding two-bases ship to field
-//     cout << "Добавь двухпалобник\n";
-//     cout << "Введи координату первой палубы корабля: ";
-//     int x, y, x1, y1;
-//     cin >> y;
-//     cin >> x;
-//     x--;
-//     y--;
-//     if ((x + 1 < N && y + 1 < N) &&
-//                 !(fieldPlayer[x][y] == 1 ||
-//                 fieldPlayer[x][y + 1] == 1 ||
-//                 fieldPlayer[x][y - 1] == 1 ||
-//                 fieldPlayer[x + 1][y] == 1 ||
-//                 fieldPlayer[x + 1][y + 1] == 1 ||
-//                 fieldPlayer[x + 1][y - 1] == 1 ||
-//                 fieldPlayer[x - 1][y] == 1 ||
-//                 fieldPlayer[x - 1][y + 1] == 1 ||
-//                 fieldPlayer[x - 1][y - 1] == 1))
-//             {
-//                 cout << "Введи координату второй палубы корабля: ";
-//                 cin >> x1;
-//                 cin >> y1;
-//                 x1--;
-//                 y1--;
-//                 if ((x1 + 1 < N && y1 + 1 < N) &&
-//                     !(fieldPlayer[x1][y1] == 1 
-//                     || (x1+1 == x && y1+1 == 1)
-//                     || (x1-1 == x && y1+1 == 1)
-//                     || (x1-1 == x && y1-1 == 1)
-//                     || (x1+1 == x && y1-1 == 1))
-//                     &&
-//                     ((x1 == x && y1+1 == y) ||
-//                     (x1+1 == x && y1 == y) || 
-//                     (x1-1 == x && y1 == y) || 
-//                     (x1 == x && y1-1 == y)))
-//                         {
-//                             fieldPlayer[x][y] = 1;
-//                             fieldPlayer[x1][y1] = 1;
-//                         }
-//                 else{
-//                     cout << "Так нельзя\n";
-//                     setupTwoPlayer();
-//                 }
-//             }
-//     else{
-//         cout << "Так нельзя";
-//         setupTwoPlayer();
-//     }
-// }
+void setupTwoPC(){}
 
 void setupOnePlayer()
 {
@@ -264,6 +167,8 @@ void setupOnePlayer()
         setupOnePlayer();
     }
 }
+
+void setupTwoPlayer(){}
 
 // Initialization of fields
 void fields()
@@ -330,13 +235,7 @@ int main()
         renderSelf();
         setupOnePC();  
     }
-    // for(int i = 0; i < 3; i++){
-    //     setupTwoPlayer();
-    //     renderSelf();
-    //     setupTwoPC();
-    // }
-    // renderSelf();
-    // renderShooted();
+
     renderBot();
     while (scorePC < 20 || scorePlayer < 20){
         shoot();
