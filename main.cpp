@@ -1,6 +1,5 @@
 #include <iostream>
 #include <cstdlib>
-#include <ctime>
 
 using namespace std;
 
@@ -148,7 +147,6 @@ void setupTwoPC()
 
     x = 1 + rand() % N;
     y = 1 + rand() % N;
-    cout << x << y;
 
     if (!(fieldComp[x][y] == 1 ||
           fieldComp[x][y + 1] == 1 ||
@@ -186,6 +184,79 @@ void setupTwoPC()
     }
 }
 
+void setupThreePC()
+{
+    // Adding three-bases ship to field by pc
+    int x, y, x1, y1, x2, y2;
+    x = 1 + rand() % N;
+    y = 1 + rand() % N;
+    if ((x + 1 < N && y + 1 < N) &&
+        !(fieldPlayer[x][y] == 1 ||
+          fieldPlayer[x][y + 1] == 1 ||
+          fieldPlayer[x][y - 1] == 1 ||
+          fieldPlayer[x + 1][y] == 1 ||
+          fieldPlayer[x - 1][y] == 1 ||
+          fieldPlayer[x + 1][y + 1] == 1 ||
+          fieldPlayer[x - 1][y + 1] == 1 ||
+          fieldPlayer[x + 1][y - 1] == 1 ||
+          fieldPlayer[x - 1][y - 1] == 1) &&
+        !(fieldPlayer[x][y] == 1 ||
+          fieldPlayer[x][y + 2] == 1 ||
+          fieldPlayer[x][y - 2] == 1 ||
+          fieldPlayer[x + 2][y] == 1 ||
+          fieldPlayer[x - 2][y] == 1 ||
+          fieldPlayer[x + 2][y + 2] == 1 ||
+          fieldPlayer[x - 2][y + 2] == 1 ||
+          fieldPlayer[x + 2][y - 2] == 1 ||
+          fieldPlayer[x - 2][y - 2] == 1) &&
+        !(fieldPlayer[x][y] == 1 ||
+          fieldPlayer[x][y + 3] == 1 ||
+          fieldPlayer[x][y - 3] == 1 ||
+          fieldPlayer[x + 3][y] == 1 ||
+          fieldPlayer[x - 3][y] == 1 ||
+          fieldPlayer[x + 3][y + 3] == 1 ||
+          fieldPlayer[x - 3][y + 3] == 1 ||
+          fieldPlayer[x + 3][y - 3] == 1 ||
+          fieldPlayer[x - 3][y - 3] == 1))
+    {
+        x1 = rand() % N;
+        y1 = rand() % N;
+        if (fieldPlayer[x1][y1] != 1 and
+            (x + 1 == x1 and y == y1 ||
+             x - 1 == x1 and y == y1||
+             x == x1 and y + 1 == y1||
+             x == x1 and y - 1 == y1) and
+            inField(x1, y1)){
+            x2 = rand() % N;
+            y2 = rand() % N;
+            if (fieldPlayer[x2][y2] != 1 and
+                ((x1 + 1 == x2 and y1 == y2 ||
+                  x1 - 1 == x2 and y1 == y2||
+                  x1 == x2 and y1 + 1 == y2||
+                  x1 == x2 and y1 - 1 == y2) or
+                 (x + 1 == x2 and y == y2 ||
+                  x - 1 == x2 and y == y2||
+                  x == x2 and y + 1 == y2||
+                  x == x2 and y - 1 == y2))
+                and
+                inField(x2, y2)){
+                fieldPlayer[x][y] = 1;
+                fieldPlayer[x1][y1] = 1;
+                fieldPlayer[x2][y2] = 1;
+            }
+            else {
+                setupThreePC();
+            }
+        }
+        else {
+            setupThreePC();
+        }
+    }
+    else{
+        setupThreePC();
+    }
+}
+
 // Setting up Player's ships
 void setupOnePlayer()
 {
@@ -218,6 +289,8 @@ void setupOnePlayer()
 void setupTwoPlayer()
 {
     // Adding two-bases ship to field by player
+    cout << "Добавление двухпалубного корабля\n";
+
     cout << "Введи координату двухпалубника (первой палубы): ";
     int x, y, x1, y1;
     cin >> y;
@@ -266,6 +339,92 @@ void setupTwoPlayer()
     else{
         cout << "Так нельзя, введи другую координату\n";
         setupTwoPlayer();
+    }
+}
+
+void setupThreePlayer()
+{
+    // Adding three-bases ship to field by player
+    cout << "Добавление трехпалубного корабля\n";
+    cout << "Введи координату первой палубы: ";
+    int x, y, x1, y1, x2, y2;
+    cin >> y;
+    cin >> x;
+    x--;
+    y--;
+    if ((x + 1 < N && y + 1 < N) &&
+        !(fieldPlayer[x][y] == 1 ||
+          fieldPlayer[x][y + 1] == 1 ||
+          fieldPlayer[x][y - 1] == 1 ||
+          fieldPlayer[x + 1][y] == 1 ||
+          fieldPlayer[x - 1][y] == 1 ||
+          fieldPlayer[x + 1][y + 1] == 1 ||
+          fieldPlayer[x - 1][y + 1] == 1 ||
+          fieldPlayer[x + 1][y - 1] == 1 ||
+          fieldPlayer[x - 1][y - 1] == 1) &&
+        !(fieldPlayer[x][y] == 1 ||
+          fieldPlayer[x][y + 2] == 1 ||
+          fieldPlayer[x][y - 2] == 1 ||
+          fieldPlayer[x + 2][y] == 1 ||
+          fieldPlayer[x - 2][y] == 1 ||
+          fieldPlayer[x + 2][y + 2] == 1 ||
+          fieldPlayer[x - 2][y + 2] == 1 ||
+          fieldPlayer[x + 2][y - 2] == 1 ||
+          fieldPlayer[x - 2][y - 2] == 1) &&
+        !(fieldPlayer[x][y] == 1 ||
+          fieldPlayer[x][y + 3] == 1 ||
+          fieldPlayer[x][y - 3] == 1 ||
+          fieldPlayer[x + 3][y] == 1 ||
+          fieldPlayer[x - 3][y] == 1 ||
+          fieldPlayer[x + 3][y + 3] == 1 ||
+          fieldPlayer[x - 3][y + 3] == 1 ||
+          fieldPlayer[x + 3][y - 3] == 1 ||
+          fieldPlayer[x - 3][y - 3] == 1))
+    {
+        cout << "Введи координату второй палубы: ";
+        cin >> y1;
+        cin >> x1;
+        y1--;
+        x1--;
+        if (fieldPlayer[x1][y1] != 1 and
+            (x + 1 == x1 and y == y1 ||
+             x - 1 == x1 and y == y1||
+             x == x1 and y + 1 == y1||
+             x == x1 and y - 1 == y1) and
+            inField(x1, y1)){
+            cout << "Введи координату третей палубы: ";
+            cin >> y2;
+            cin >> x2;
+            y2--;
+            x2--;
+            if (fieldPlayer[x2][y2] != 1 and
+                ((x1 + 1 == x2 and y1 == y2 ||
+                 x1 - 1 == x2 and y1 == y2||
+                 x1 == x2 and y1 + 1 == y2||
+                 x1 == x2 and y1 - 1 == y2) or
+                 (x + 1 == x2 and y == y2 ||
+                  x - 1 == x2 and y == y2||
+                  x == x2 and y + 1 == y2||
+                  x == x2 and y - 1 == y2))
+                 and
+                inField(x2, y2)){
+                fieldPlayer[x][y] = 1;
+                fieldPlayer[x1][y1] = 1;
+                fieldPlayer[x2][y2] = 1;
+                }
+            else {
+                cout << "Так нельзя, введи другие координаты палуб\n";
+                setupThreePlayer();
+            }
+        }
+        else {
+            cout << "Так нельзя, введи другие координаты палуб\n";
+            setupThreePlayer();
+        }
+    }
+    else{
+        cout << "Так нельзя, введи другую координату\n";
+        setupThreePlayer();
     }
 }
 
@@ -327,6 +486,7 @@ int main()
     int buff = 0;
     int scorePlayer = 0;
     int scorePC = 0;
+    winValue = 13;
     fields();
     // magick
      for(int i = 0; i < 4; i++){
@@ -339,9 +499,10 @@ int main()
         renderSelf();
         setupTwoPC();
     }
-
-     renderBot();
-     while (scorePC < 20  or scorePlayer < 20){
+    setupThreePlayer();
+    renderSelf();
+    setupThreePC();
+     while (scorePC < winValue  or scorePlayer < winValue){
          shoot();
          renderBot();
          system("cls");
