@@ -1,3 +1,5 @@
 .vscode
 main.dSYM
 main
+CMakeLists.txt
+cmake-build-debug
