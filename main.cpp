@@ -56,7 +56,7 @@ void renderSelf()
 
 void renderShooted()
 {
-    // Output of player's field
+    // Output of bot's field in player's pov
     cout << "\t";
     for(int i = 1; i < N; i++)
     {
@@ -89,6 +89,8 @@ void renderShooted()
 
 void renderBot()
 {
+    // Debug only feature!!!!
+    // TODO: Delete ASAP
     cout << "\t";
     for(int i = 1; i < N; i++)
     {
@@ -184,10 +186,10 @@ void setupTwoPC()
     }
 }
 
-
+// Setting up Player's ships
 void setupOnePlayer()
 {
-    // Adding solo ship to field
+    // Adding solo ship to field by player
     cout << "Введи координату однопалубника: ";
     int x, y;
     cin >> y;
