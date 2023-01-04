@@ -1,12 +1,16 @@
 #include <iostream>
-#include <cstdlib>
+#include <stdlib.h>
+#include <ctime>
 
 using namespace std;
+
+
 
 const int N = 11;
 int corX, corY, winValue;
 int fieldPlayer[N + 2][N + 2];
 int fieldShootFrPlayer[N][N];
+int fieldShootFrPC[N][N];
 int fieldComp[N][N];
 
 // Checks
@@ -17,6 +21,10 @@ bool inField(int x, int y){
     else{
         return false;
     }
+}
+
+void BrainPC(){
+    // TODO: Make PC's shooting logic
 }
 
 // Render functions
@@ -55,7 +63,7 @@ void renderSelf()
 
 void renderShooted()
 {
-    // Output of bot's field in player's pov
+    // Output of PC's field in player's pov
     cout << "\t";
     for(int i = 1; i < N; i++)
     {
@@ -124,20 +132,20 @@ void renderBot()
 void setupOnePC()
 {
     // Adding solo ship to field with random
-            corX = rand() % N;
-            corY = rand() % N;
-            if ((fieldComp[corX][corY] == 0 ||
-                fieldComp[corX][corY + 1] == 0 ||
-                fieldComp[corX][corY - 1] == 0 ||
-                fieldComp[corX + 1][corY] == 0 ||
-                fieldComp[corX + 1][corY + 1] == 0 ||
-                fieldComp[corX + 1][corY - 1] == 0 ||
-                fieldComp[corX - 1][corY] == 0 ||
-                fieldComp[corX - 1][corY + 1] == 0 ||
-                fieldComp[corX - 1][corY - 1] == 0))
-            {
-                fieldComp[corX][corY] = 1;
-            }
+    corX = rand() % N;
+    corY = rand() % N;
+    if ((fieldComp[corX][corY] == 0 ||
+         fieldComp[corX][corY + 1] == 0 ||
+         fieldComp[corX][corY - 1] == 0 ||
+         fieldComp[corX + 1][corY] == 0 ||
+         fieldComp[corX + 1][corY + 1] == 0 ||
+         fieldComp[corX + 1][corY - 1] == 0 ||
+         fieldComp[corX - 1][corY] == 0 ||
+         fieldComp[corX - 1][corY + 1] == 0 ||
+         fieldComp[corX - 1][corY - 1] == 0))
+    {
+        fieldComp[corX][corY] = 1;
+    }
 }
 
 void setupTwoPC()
@@ -268,18 +276,18 @@ void setupOnePlayer()
     x--;
     y--;
     if ((x + 1 < N && y + 1 < N) &&
-                !(fieldPlayer[x][y] == 1 ||
-                fieldPlayer[x][y + 1] == 1 ||
-                fieldPlayer[x][y - 1] == 1 ||
-                fieldPlayer[x + 1][y] == 1 ||
-                fieldPlayer[x - 1][y] == 1 ||
-                fieldPlayer[x + 1][y + 1] == 1 ||
-                fieldPlayer[x - 1][y + 1] == 1 ||
-                fieldPlayer[x + 1][y - 1] == 1 ||
-                fieldPlayer[x - 1][y - 1] == 1))
-            {
-                fieldPlayer[x][y] = 1;
-            }
+        !(fieldPlayer[x][y] == 1 ||
+          fieldPlayer[x][y + 1] == 1 ||
+          fieldPlayer[x][y - 1] == 1 ||
+          fieldPlayer[x + 1][y] == 1 ||
+          fieldPlayer[x - 1][y] == 1 ||
+          fieldPlayer[x + 1][y + 1] == 1 ||
+          fieldPlayer[x - 1][y + 1] == 1 ||
+          fieldPlayer[x + 1][y - 1] == 1 ||
+          fieldPlayer[x - 1][y - 1] == 1))
+    {
+        fieldPlayer[x][y] = 1;
+    }
     else{
         cout << "Так нельзя\n";
         setupOnePlayer();
@@ -299,43 +307,43 @@ void setupTwoPlayer()
     y--;
     if ((x + 1 < N && y + 1 < N) &&
         !(fieldPlayer[x][y] == 1 ||
-        fieldPlayer[x][y + 1] == 1 ||
-        fieldPlayer[x][y - 1] == 1 ||
-        fieldPlayer[x + 1][y] == 1 ||
-        fieldPlayer[x - 1][y] == 1 ||
-        fieldPlayer[x + 1][y + 1] == 1 ||
-        fieldPlayer[x - 1][y + 1] == 1 ||
-        fieldPlayer[x + 1][y - 1] == 1 ||
-        fieldPlayer[x - 1][y - 1] == 1) &&
+          fieldPlayer[x][y + 1] == 1 ||
+          fieldPlayer[x][y - 1] == 1 ||
+          fieldPlayer[x + 1][y] == 1 ||
+          fieldPlayer[x - 1][y] == 1 ||
+          fieldPlayer[x + 1][y + 1] == 1 ||
+          fieldPlayer[x - 1][y + 1] == 1 ||
+          fieldPlayer[x + 1][y - 1] == 1 ||
+          fieldPlayer[x - 1][y - 1] == 1) &&
         !(fieldPlayer[x][y] == 1 ||
-        fieldPlayer[x][y + 2] == 1 ||
-        fieldPlayer[x][y - 2] == 1 ||
-        fieldPlayer[x + 2][y] == 1 ||
-        fieldPlayer[x - 2][y] == 1 ||
-        fieldPlayer[x + 2][y + 2] == 1 ||
-        fieldPlayer[x - 2][y + 2] == 1 ||
-        fieldPlayer[x + 2][y - 2] == 1 ||
-        fieldPlayer[x - 2][y - 2] == 1))
-            {
-                cout << "Введи координату двухпалубника (второй палубы): ";
-                cin >> y1;
-                cin >> x1;
-                y1--;
-                x1--;
-                if (fieldPlayer[x1][y1] != 1 and
-                    (x + 1 == x1 and y == y1 ||
-                     x - 1 == x1 and y == y1||
-                     x == x1 and y + 1 == y1||
-                     x == x1 and y - 1 == y1) and
-                    inField(x1, y1)){
-                    fieldPlayer[x][y] = 1;
-                    fieldPlayer[x1][y1] = 1;
-                }
-                else {
-                    cout << "Так нельзя, введи другие координаты палуб\n";
-                    setupTwoPlayer();
-                }
-            }
+          fieldPlayer[x][y + 2] == 1 ||
+          fieldPlayer[x][y - 2] == 1 ||
+          fieldPlayer[x + 2][y] == 1 ||
+          fieldPlayer[x - 2][y] == 1 ||
+          fieldPlayer[x + 2][y + 2] == 1 ||
+          fieldPlayer[x - 2][y + 2] == 1 ||
+          fieldPlayer[x + 2][y - 2] == 1 ||
+          fieldPlayer[x - 2][y - 2] == 1))
+    {
+        cout << "Введи координату двухпалубника (второй палубы): ";
+        cin >> y1;
+        cin >> x1;
+        y1--;
+        x1--;
+        if (fieldPlayer[x1][y1] != 1 and
+            (x + 1 == x1 and y == y1 ||
+             x - 1 == x1 and y == y1||
+             x == x1 and y + 1 == y1||
+             x == x1 and y - 1 == y1) and
+            inField(x1, y1)){
+            fieldPlayer[x][y] = 1;
+            fieldPlayer[x1][y1] = 1;
+        }
+        else {
+            cout << "Так нельзя, введи другие координаты палуб\n";
+            setupTwoPlayer();
+        }
+    }
     else{
         cout << "Так нельзя, введи другую координату\n";
         setupTwoPlayer();
@@ -399,19 +407,19 @@ void setupThreePlayer()
             x2--;
             if (fieldPlayer[x2][y2] != 1 and
                 ((x1 + 1 == x2 and y1 == y2 ||
-                 x1 - 1 == x2 and y1 == y2||
-                 x1 == x2 and y1 + 1 == y2||
-                 x1 == x2 and y1 - 1 == y2) or
+                  x1 - 1 == x2 and y1 == y2||
+                  x1 == x2 and y1 + 1 == y2||
+                  x1 == x2 and y1 - 1 == y2) or
                  (x + 1 == x2 and y == y2 ||
                   x - 1 == x2 and y == y2||
                   x == x2 and y + 1 == y2||
                   x == x2 and y - 1 == y2))
-                 and
+                and
                 inField(x2, y2)){
                 fieldPlayer[x][y] = 1;
                 fieldPlayer[x1][y1] = 1;
                 fieldPlayer[x2][y2] = 1;
-                }
+            }
             else {
                 cout << "Так нельзя, введи другие координаты палуб\n";
                 setupThreePlayer();
@@ -434,23 +442,23 @@ void fields()
     // Creating player's field 
     for(int i = 0; i < N; i++){
         for(int j = 0; j < N; j++){
-                fieldPlayer[i][j] = 0;
-            }
+            fieldPlayer[i][j] = 0;
+        }
     }
-    
+
     // Creating computer's field 
     for(int i = 0; i < N; i++){
         for(int j = 0; j < N; j++){
-                fieldComp[i][j] = 0;
-            }
+            fieldComp[i][j] = 0;
+        }
     }
 }
 
 // Shooting functions
-void shoot()
+void shoot(int scorePlayer)
 {
+    // Player's shooting system
     int xt, yt;
-    int scorePlayer;
     cout << "В какую клетку вести огонь, капитан? ";
     cin >> yt;
     cin >> xt;
@@ -462,7 +470,7 @@ void shoot()
         cout << "Попадание! Можно и еще один выстрел сделать.\n";
         scorePlayer++;
         renderShooted();
-        shoot();
+        shoot(scorePlayer);
     }
     else if (fieldComp[xt][yt] == 0 && inField(xt, yt)) {
         fieldShootFrPlayer[xt][yt] = 3;
@@ -472,12 +480,27 @@ void shoot()
     }
     else{
         cout << "Ты сюда уже стрелял. Попробуй другую клетку)";
-        shoot();
+        shoot(scorePlayer);
     }
 }
 
-// TODO: PC's shooting system
-
+void shootPC(int xt, int yt, int scorePC)
+{
+    // PC's shooting system
+    if (fieldComp[xt][yt] == 1 && inField(xt, yt)){
+        fieldShootFrPC[xt][yt] = 2;
+        fieldComp[xt][yt] = 2;
+        scorePC++;
+        shootPC(xt, yt, scorePC);
+    }
+    else if (fieldComp[xt][yt] == 0 && inField(xt, yt)) {
+        fieldShootFrPC[xt][yt] = 3;
+        fieldComp[xt][yt] = 3;
+    }
+    else{
+        shootPC(xt, yt, scorePC);
+    }
+}
 
 // Game itself
 int main()
@@ -489,11 +512,11 @@ int main()
     winValue = 13;
     fields();
     // magick
-     for(int i = 0; i < 4; i++){
-         setupOnePlayer();
-         renderSelf();
-         setupOnePC();
-     }
+    for(int i = 0; i < 4; i++){
+        setupOnePlayer();
+        renderSelf();
+        setupOnePC();
+    }
     for(int i = 0; i < 3; i++){
         setupTwoPlayer();
         renderSelf();
@@ -502,11 +525,12 @@ int main()
     setupThreePlayer();
     renderSelf();
     setupThreePC();
-     while (scorePC < winValue  or scorePlayer < winValue){
-         shoot();
-         renderBot();
-         system("cls");
-         system("clear");
-     }
+    while (scorePC < winValue  or scorePlayer < winValue){
+        shoot(scorePlayer);
+        renderBot();
+        system("cls");
+        system("clear");
+    }
     return 0;
 }
+#pragma clang diagnostic pop
