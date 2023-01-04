@@ -1,6 +1,7 @@
 #include <iostream>
 #include <stdlib.h>
 #include <ctime>
+#include <random>
 
 using namespace std;
 
@@ -132,43 +133,63 @@ void renderBot()
 void setupOnePC()
 {
     // Adding solo ship to field with random
-    corX = rand() % N;
-    corY = rand() % N;
-    if ((fieldComp[corX][corY] == 0 ||
-         fieldComp[corX][corY + 1] == 0 ||
-         fieldComp[corX][corY - 1] == 0 ||
-         fieldComp[corX + 1][corY] == 0 ||
-         fieldComp[corX + 1][corY + 1] == 0 ||
-         fieldComp[corX + 1][corY - 1] == 0 ||
-         fieldComp[corX - 1][corY] == 0 ||
-         fieldComp[corX - 1][corY + 1] == 0 ||
-         fieldComp[corX - 1][corY - 1] == 0))
-    {
-        fieldComp[corX][corY] = 1;
-    }
+    int x, y;
+    random_device dev;
+    mt19937 rng(dev());
+    uniform_int_distribution<std::mt19937::result_type> rndm(1,11);
+    x = rndm(rng);
+    y = rndm(rng);
+//    if ((x + 1 < N && y + 1 < N) &&
+//         (fieldComp[x][y] != 1 ||
+//          fieldComp[x][y + 1] != 1 ||
+//          fieldComp[x][y - 1] != 1 ||
+//          fieldComp[x + 1][y] != 1 ||
+//          fieldComp[x - 1][y] != 1 ||
+//          fieldComp[x + 1][y + 1] != 1 ||
+//          fieldComp[x - 1][y + 1] != 1 ||
+//          fieldComp[x + 1][y - 1] != 1 ||
+//          fieldComp[x - 1][y - 1] != 1))
+//    {
+        fieldComp[x][y] = 1;
+//    }
 }
 
 void setupTwoPC()
 {
     // Adding two-bases ship to field to computer
     int x, y, x1, y1;
+    random_device dev;
+    mt19937 rng(dev());
+    uniform_int_distribution<std::mt19937::result_type> rndm(1,11);
+    x = rndm(rng);
+    y = rndm(rng);
 
-    x = 1 + rand() % N;
-    y = 1 + rand() % N;
-
-    if (!(fieldComp[x][y] == 1 ||
-          fieldComp[x][y + 1] == 1 ||
-          fieldComp[x][y - 1] == 1 ||
-          fieldComp[x + 1][y] == 1 ||
-          fieldComp[x + 1][y + 1] == 1 ||
-          fieldComp[x + 1][y - 1] == 1 ||
-          fieldComp[x - 1][y] == 1 ||
-          fieldComp[x - 1][y + 1] == 1 ||
-          fieldComp[x - 1][y - 1] == 1))
+    if ((x + 1 < N && y + 1 < N) &&
+        (fieldPlayer[x][y] != 1 ||
+         fieldPlayer[x][y + 1] != 1 ||
+         fieldPlayer[x][y - 1] != 1 ||
+         fieldPlayer[x + 1][y] != 1 ||
+         fieldPlayer[x - 1][y] != 1 ||
+         fieldPlayer[x + 1][y + 1] != 1 ||
+         fieldPlayer[x - 1][y + 1] != 1 ||
+         fieldPlayer[x + 1][y - 1] != 1 ||
+         fieldPlayer[x - 1][y - 1] != 1) &&
+        (fieldPlayer[x][y] != 1 ||
+         fieldPlayer[x][y + 2] != 1 ||
+         fieldPlayer[x][y - 2] != 1 ||
+         fieldPlayer[x + 2][y] != 1 ||
+         fieldPlayer[x - 2][y] != 1 ||
+         fieldPlayer[x + 2][y + 2] != 1 ||
+         fieldPlayer[x - 2][y + 2] != 1 ||
+         fieldPlayer[x + 2][y - 2] != 1 ||
+         fieldPlayer[x - 2][y - 2] != 1))
     {
 
-        x1 = rand() % N;
-        y1 = rand() % N;
+        random_device dev;
+        mt19937 rng(dev());
+        uniform_int_distribution<std::mt19937::result_type> rndm(1,11);
+        x1 = rndm(rng);
+        y1 = rndm(rng);
         if (!(fieldComp[x1][y1] == 1
               || (x1+1 == x && y1+1 == 1)
               || (x1-1 == x && y1+1 == 1)
@@ -195,62 +216,74 @@ void setupTwoPC()
 void setupThreePC()
 {
     // Adding three-bases ship to field by pc
-    int x, y, x1, y1, x2, y2;
-    x = 1 + rand() % N;
-    y = 1 + rand() % N;
+    int x, y, x1, y1, x2, y2, one, two, three, four;
+    int arr[1];
+    random_device dev;
+    mt19937 rng(dev());
+    uniform_int_distribution<std::mt19937::result_type> rndm(1,11);
+    x = rndm(rng);
+    y = rndm(rng);
     if ((x + 1 < N && y + 1 < N) &&
-        !(fieldPlayer[x][y] == 1 ||
-          fieldPlayer[x][y + 1] == 1 ||
-          fieldPlayer[x][y - 1] == 1 ||
-          fieldPlayer[x + 1][y] == 1 ||
-          fieldPlayer[x - 1][y] == 1 ||
-          fieldPlayer[x + 1][y + 1] == 1 ||
-          fieldPlayer[x - 1][y + 1] == 1 ||
-          fieldPlayer[x + 1][y - 1] == 1 ||
-          fieldPlayer[x - 1][y - 1] == 1) &&
-        !(fieldPlayer[x][y] == 1 ||
-          fieldPlayer[x][y + 2] == 1 ||
-          fieldPlayer[x][y - 2] == 1 ||
-          fieldPlayer[x + 2][y] == 1 ||
-          fieldPlayer[x - 2][y] == 1 ||
-          fieldPlayer[x + 2][y + 2] == 1 ||
-          fieldPlayer[x - 2][y + 2] == 1 ||
-          fieldPlayer[x + 2][y - 2] == 1 ||
-          fieldPlayer[x - 2][y - 2] == 1) &&
-        !(fieldPlayer[x][y] == 1 ||
-          fieldPlayer[x][y + 3] == 1 ||
-          fieldPlayer[x][y - 3] == 1 ||
-          fieldPlayer[x + 3][y] == 1 ||
-          fieldPlayer[x - 3][y] == 1 ||
-          fieldPlayer[x + 3][y + 3] == 1 ||
-          fieldPlayer[x - 3][y + 3] == 1 ||
-          fieldPlayer[x + 3][y - 3] == 1 ||
-          fieldPlayer[x - 3][y - 3] == 1))
+        (fieldComp[x][y] != 1 ||
+          fieldComp[x][y + 1] != 1 ||
+          fieldComp[x][y - 1] != 1 ||
+          fieldComp[x + 1][y] != 1 ||
+          fieldComp[x - 1][y] != 1 ||
+          fieldComp[x + 1][y + 1] != 1 ||
+          fieldComp[x - 1][y + 1] != 1 ||
+          fieldComp[x + 1][y - 1] != 1 ||
+          fieldComp[x - 1][y - 1] != 1) &&
+        (fieldComp[x][y] != 1 ||
+          fieldComp[x][y + 2] != 1 ||
+          fieldComp[x][y - 2] != 1 ||
+          fieldComp[x + 2][y] != 1 ||
+          fieldComp[x - 2][y] != 1 ||
+          fieldComp[x + 2][y + 2] != 1 ||
+          fieldComp[x - 2][y + 2] != 1 ||
+          fieldComp[x + 2][y - 2] != 1 ||
+          fieldComp[x - 2][y - 2] != 1) &&
+        (fieldComp[x][y] != 1 ||
+          fieldComp[x][y + 3] != 1 ||
+          fieldComp[x][y - 3] != 1 ||
+          fieldComp[x + 3][y] != 1 ||
+          fieldComp[x - 3][y] != 1 ||
+          fieldComp[x + 3][y + 3] != 1 ||
+          fieldComp[x - 3][y + 3] != 1 ||
+          fieldComp[x + 3][y - 3] != 1 ||
+          fieldComp[x - 3][y - 3] != 1))
     {
-        x1 = rand() % N;
-        y1 = rand() % N;
-        if (fieldPlayer[x1][y1] != 1 and
+        random_device dev;
+        mt19937 rng(dev());
+        arr[0] = x-1;
+        arr[1] = y-1;
+        uniform_int_distribution<std::mt19937::result_type> rndm(1, 11);
+        x1 = rndm(rng);
+        y1 = rndm(rng);
+        if (fieldComp[x1][y1] != 1 and
             (x + 1 == x1 and y == y1 ||
              x - 1 == x1 and y == y1||
              x == x1 and y + 1 == y1||
              x == x1 and y - 1 == y1) and
             inField(x1, y1)){
-            x2 = rand() % N;
-            y2 = rand() % N;
-            if (fieldPlayer[x2][y2] != 1 and
+            random_device dev;
+            mt19937 rng(dev());
+            uniform_int_distribution<std::mt19937::result_type> rndm(1, 11);
+            x2 = rndm(rng);
+            y2 = rndm(rng);
+            if (fieldComp[x2][y2] != 1 and
                 ((x1 + 1 == x2 and y1 == y2 ||
                   x1 - 1 == x2 and y1 == y2||
                   x1 == x2 and y1 + 1 == y2||
                   x1 == x2 and y1 - 1 == y2) or
-                 (x + 1 == x2 and y == y2 ||
+                 (x + 1 == x2 and y == y2||
                   x - 1 == x2 and y == y2||
                   x == x2 and y + 1 == y2||
                   x == x2 and y - 1 == y2))
                 and
                 inField(x2, y2)){
-                fieldPlayer[x][y] = 1;
-                fieldPlayer[x1][y1] = 1;
-                fieldPlayer[x2][y2] = 1;
+                fieldComp[x][y] = 1;
+                fieldComp[x1][y1] = 1;
+                fieldComp[x2][y2] = 1;
             }
             else {
                 setupThreePC();
@@ -260,7 +293,7 @@ void setupThreePC()
             setupThreePC();
         }
     }
-    else{
+    else {
         setupThreePC();
     }
 }
@@ -361,33 +394,33 @@ void setupThreePlayer()
     x--;
     y--;
     if ((x + 1 < N && y + 1 < N) &&
-        !(fieldPlayer[x][y] == 1 ||
-          fieldPlayer[x][y + 1] == 1 ||
-          fieldPlayer[x][y - 1] == 1 ||
-          fieldPlayer[x + 1][y] == 1 ||
-          fieldPlayer[x - 1][y] == 1 ||
-          fieldPlayer[x + 1][y + 1] == 1 ||
-          fieldPlayer[x - 1][y + 1] == 1 ||
-          fieldPlayer[x + 1][y - 1] == 1 ||
-          fieldPlayer[x - 1][y - 1] == 1) &&
-        !(fieldPlayer[x][y] == 1 ||
-          fieldPlayer[x][y + 2] == 1 ||
-          fieldPlayer[x][y - 2] == 1 ||
-          fieldPlayer[x + 2][y] == 1 ||
-          fieldPlayer[x - 2][y] == 1 ||
-          fieldPlayer[x + 2][y + 2] == 1 ||
-          fieldPlayer[x - 2][y + 2] == 1 ||
-          fieldPlayer[x + 2][y - 2] == 1 ||
-          fieldPlayer[x - 2][y - 2] == 1) &&
-        !(fieldPlayer[x][y] == 1 ||
-          fieldPlayer[x][y + 3] == 1 ||
-          fieldPlayer[x][y - 3] == 1 ||
-          fieldPlayer[x + 3][y] == 1 ||
-          fieldPlayer[x - 3][y] == 1 ||
-          fieldPlayer[x + 3][y + 3] == 1 ||
-          fieldPlayer[x - 3][y + 3] == 1 ||
-          fieldPlayer[x + 3][y - 3] == 1 ||
-          fieldPlayer[x - 3][y - 3] == 1))
+        (fieldPlayer[x][y] != 1 ||
+          fieldPlayer[x][y + 1] != 1 ||
+          fieldPlayer[x][y - 1] != 1 ||
+          fieldPlayer[x + 1][y] != 1 ||
+          fieldPlayer[x - 1][y] != 1 ||
+          fieldPlayer[x + 1][y + 1] != 1 ||
+          fieldPlayer[x - 1][y + 1] != 1 ||
+          fieldPlayer[x + 1][y - 1] != 1 ||
+          fieldPlayer[x - 1][y - 1] != 1) &&
+        (fieldPlayer[x][y] != 1 ||
+          fieldPlayer[x][y + 2] != 1 ||
+          fieldPlayer[x][y - 2] != 1 ||
+          fieldPlayer[x + 2][y] != 1 ||
+          fieldPlayer[x - 2][y] != 1 ||
+          fieldPlayer[x + 2][y + 2] != 1 ||
+          fieldPlayer[x - 2][y + 2] != 1 ||
+          fieldPlayer[x + 2][y - 2] != 1 ||
+          fieldPlayer[x - 2][y - 2] != 1) &&
+        (fieldPlayer[x][y] != 1 ||
+          fieldPlayer[x][y + 3] != 1 ||
+          fieldPlayer[x][y - 3] != 1 ||
+          fieldPlayer[x + 3][y] != 1 ||
+          fieldPlayer[x - 3][y] != 1 ||
+          fieldPlayer[x + 3][y + 3] != 1 ||
+          fieldPlayer[x - 3][y + 3] != 1 ||
+          fieldPlayer[x + 3][y - 3] != 1 ||
+          fieldPlayer[x - 3][y - 3] != 1))
     {
         cout << "Введи координату второй палубы: ";
         cin >> y1;
@@ -512,25 +545,26 @@ int main()
     winValue = 13;
     fields();
     // magick
-    for(int i = 0; i < 4; i++){
-        setupOnePlayer();
-        renderSelf();
-        setupOnePC();
-    }
+    setupThreePC();
     for(int i = 0; i < 3; i++){
-        setupTwoPlayer();
-        renderSelf();
+        // setupTwoPlayer();
+//        renderSelf();
         setupTwoPC();
     }
-    setupThreePlayer();
-    renderSelf();
-    setupThreePC();
-    while (scorePC < winValue  or scorePlayer < winValue){
-        shoot(scorePlayer);
-        renderBot();
-        system("cls");
-        system("clear");
+    for(int i = 0; i < 10; i++){
+        // setupOnePlayer();
+//        renderSelf();
+        setupOnePC();
     }
+//    setupThreePlayer();
+    renderSelf();
+    cout << "Test";
+    renderBot();
+//    while (scorePC < winValue  or scorePlayer < winValue){
+//        shoot(scorePlayer);
+//        renderBot();
+//        system("cls");
+//        system("clear");
+//    }
     return 0;
 }
-#pragma clang diagnostic pop
